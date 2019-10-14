@@ -1,3 +1,30 @@
+class Item:
+    def __init__(self):
+        self.pmTop = 0
+        self.pmBot = 0
+        self.pmRight = 0
+        self.pmLeft = 0
+
+        self.rotAngle = 0
+
+    def getAttrs(self):
+        return vars(self)
+
+    def getAttrsRec(self):
+        attrs = vars(self)
+
+        for attr in attrs:
+            if hasattr(attrs[attr], "getAttrsRec"):
+                attrs[attr] = attrs[attr].getAttrsRec()
+
+            elif list == type(attrs[attr]) and len(attrs[attr]) and  hasattr(attrs[attr][0], "getAttrsRec"):
+                lst = []
+                for subattr in attrs[attr]:
+                    lst.append(subattr.getAttrsRec())
+                attrs[attr] = lst
+
+        return attrs
+
 class Token:
     def __init__(self, token):
         assert type(token) == str
@@ -73,6 +100,7 @@ class Line:
         lWords = Line.listWords(strLine)
 
         self.words = self.createWords(lWords)
+        #self.words = []
 
         self.pmTop = 0
         self.pmBot = 0
